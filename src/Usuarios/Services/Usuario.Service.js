@@ -38,11 +38,18 @@ async function Logout(token) {
     await listaNegraService.agregarToken(token);
     return { message: 'Sesión cerrada exitosamente' };
 }
+async function deleteUser(id) {
+    const isDeleted = await UserModel.deleteUser(id);
+    if (!isDeleted) throw new Error("No se pudo eliminar el usuario.");
+    return { message: "Usuario eliminado exitosamente." };
+}
+
 module.exports = {
     registerUser,
     loginUser,
     updateUser,
     resetPassword,
     listUsers,
-    Logout
+    Logout,
+    deleteUser
 };

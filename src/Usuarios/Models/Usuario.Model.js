@@ -35,11 +35,16 @@ async function listUsers() {
     const [rows] = await pool.execute(sql);
     return rows;
 }
-
+async function deleteUser(id) {
+    const sql = `DELETE FROM users WHERE id = ?`;
+    const [result] = await pool.execute(sql, [id]);
+    return result.affectedRows > 0;
+}
 module.exports = {
     insertUser,
     findUserByEmail,
     updateUser,
     updatePassword,
-    listUsers
+    listUsers,
+    deleteUser
 };

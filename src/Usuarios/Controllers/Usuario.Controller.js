@@ -65,11 +65,22 @@ async function Logout(req, res) {
         res.status(500).json({ error: 'Error interno del servidor' });
     }
 }
+
+async function deleteUser(req, res) {
+    try {
+        const { id } = req.params;
+        await UserService.deleteUser(id);
+        res.status(200).json({ message: "Usuario eliminado exitosamente." });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+}
 module.exports = {
     registerUser,
     loginUser,
     updateUser,
     resetPassword,
     listUsers,
-    Logout
+    Logout,
+    deleteUser
 };
