@@ -1,7 +1,7 @@
 const pool = require('../../config/Database');
 
 async function insertUser(user) {
-    const sql = `INSERT INTO users (email, password, name) VALUES (?, ?, ?)`;
+    const sql = `INSERT INTO users (email,identificacion,  password, name) VALUES (?,?, ?, ?)`;
     const [result] = await pool.execute(sql, [user.email, user.password, user.name]);
     return result.insertId;
 }
@@ -13,9 +13,17 @@ async function findUserByEmail(email) {
 }
 
 async function updateUser(id, updatedData) {
-    const sql = `UPDATE users SET name = ? WHERE id = ?`;
-    const [result] = await pool.execute(sql, [updatedData.name, id]);
-    return result.affectedRows > 0; }
+    const sql = `UPDATE users 
+                 SET name = ?, identificacion = ?, email = ?, updated_at = NOW() 
+                 WHERE id = ?`;
+    const [result] = await pool.execute(sql, [
+        updatedData.name,
+        updatedData.identificacion,
+        updatedData.email,
+        id,
+    ]);
+    return result.affectedRows > 0; 
+}
 
 async function updatePassword(id, newPassword) {
     const sql = `UPDATE users SET password = ? WHERE id = ?`;
@@ -23,7 +31,7 @@ async function updatePassword(id, newPassword) {
     return result.affectedRows > 0;
 }
 async function listUsers() {
-    const sql = `SELECT id, email, name, created_at FROM users ORDER BY name ASC`;
+    const sql = `SELECT id, identificacion, email, name, created_at FROM users ORDER BY name ASC`;
     const [rows] = await pool.execute(sql);
     return rows;
 }

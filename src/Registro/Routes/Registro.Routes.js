@@ -4,7 +4,7 @@ const ContactController = require('../Controllers/Registro.Controller');
 
 router.post('/crearRegistro', ContactController.createContact);
 
-router.get('/LstarRegistro', ContactController.getAllContacts);
+router.get('/LstarRegistros', ContactController.getAllContacts);
 
 router.get('/listarPorId/:id', ContactController.getContactById);
 
