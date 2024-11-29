@@ -6,8 +6,10 @@ router.post('/register', UserController.registerUser);
 
 router.post('/login', UserController.loginUser);
 
-router.put('/:id', UserController.updateUser);
+router.put('/update/:id', UserController.updateUser);
 
 router.put('/reset-password/:id', UserController.resetPassword);
+router.get('/ListarUsers', UserController.listUsers);
+router.post('/Logout', UserController.Logout);
 
 module.exports = router;

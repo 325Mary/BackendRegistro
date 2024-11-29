@@ -1,6 +1,7 @@
 const UserModel = require('../Models/Usuario.Model');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const {listaNegraService} = require('../Services/ListBlackService');
 
 async function registerUser(user) {
     const existingUser = await UserModel.findUserByEmail(user.email);
@@ -27,10 +28,21 @@ async function resetPassword(id, newPassword) {
     const hashedPassword = await bcrypt.hash(newPassword, 10);
     return await UserModel.updatePassword(id, hashedPassword);
 }
+async function listUsers() {
+    const users = await UserModel.listUsers();
+    return users;
+}  
 
+async function Logout(token) {
+    if (!token) throw new Error('Token no proporcionado');
+    await listaNegraService.agregarToken(token);
+    return { message: 'Sesión cerrada exitosamente' };
+}
 module.exports = {
     registerUser,
     loginUser,
     updateUser,
-    resetPassword
+    resetPassword,
+    listUsers,
+    Logout
 };

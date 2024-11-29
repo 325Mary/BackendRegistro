@@ -1,45 +1,43 @@
-const connect = require('../../config/Database');
-
+const pool = require('../../config/Database'); 
 async function insertContact(contact) {
-    const db = await connect();
-    const result = await db.collection('contacts').insertOne(contact);
-    return result;
+    const sql = 'INSERT INTO contacts (name, phone, email) VALUES (?, ?, ?)';
+    const [result] = await pool.execute(sql, [contact.name, contact.phone, contact.email]);
+    return result.insertId;
 }
 
-async function findAllContacts() {
-    const db = await connect();
-    const contacts = await db.collection('contacts').find({}).toArray();
-    return contacts;
+async function getAllContacts() {
+    const sql = 'SELECT * FROM contacts ORDER BY name ASC';  
+    const [rows] = await pool.execute(sql);
+    return rows;
 }
 
-async function findContactById(id) {
-    const db = await connect();
-    const { ObjectId } = require('mongodb');
-    const contact = await db.collection('contacts').findOne({ _id: new ObjectId(id) });
-    return contact;
+async function getContactById(id) {
+    const sql = 'SELECT * FROM contacts WHERE id = ?';
+    const [rows] = await pool.execute(sql, [id]);
+    return rows[0];
 }
 
 async function updateContact(id, updatedData) {
-    const db = await connect();
-    const { ObjectId } = require('mongodb');
-    const result = await db.collection('contacts').updateOne(
-        { _id: new ObjectId(id) },
-        { $set: updatedData }
-    );
-    return result;
+    const sql = 'UPDATE contacts SET name = ?, phone = ?, email = ? WHERE id = ?';
+    const [result] = await pool.execute(sql, [updatedData.name, updatedData.phone, updatedData.email, id]);
+    return result.affectedRows > 0; 
 }
-
 async function deleteContact(id) {
-    const db = await connect();
-    const { ObjectId } = require('mongodb');
-    const result = await db.collection('contacts').deleteOne({ _id: new ObjectId(id) });
-    return result;
+    const sql = 'DELETE FROM contacts WHERE id = ?';
+    const [result] = await pool.execute(sql, [id]);
+    return result.affectedRows > 0;  
+}
+async function searchContacts(query) {
+    const sql = 'SELECT * FROM contacts WHERE name LIKE ? OR phone LIKE ? ORDER BY name ASC';
+    const [rows] = await pool.execute(sql, [`%${query}%`, `%${query}%`]);
+    return rows;
 }
 
 module.exports = {
     insertContact,
-    findAllContacts,
-    findContactById,
+    getAllContacts,
+    getContactById,
     updateContact,
-    deleteContact
+    deleteContact,
+    searchContacts
 };

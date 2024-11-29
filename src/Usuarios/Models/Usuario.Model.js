@@ -22,10 +22,16 @@ async function updatePassword(id, newPassword) {
     const [result] = await pool.execute(sql, [newPassword, id]);
     return result.affectedRows > 0;
 }
+async function listUsers() {
+    const sql = `SELECT id, email, name, created_at FROM users ORDER BY name ASC`;
+    const [rows] = await pool.execute(sql);
+    return rows;
+}
 
 module.exports = {
     insertUser,
     findUserByEmail,
     updateUser,
-    updatePassword
+    updatePassword,
+    listUsers
 };
