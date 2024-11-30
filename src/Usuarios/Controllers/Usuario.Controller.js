@@ -38,6 +38,7 @@ async function resetPassword(req, res) {
         res.status(400).json({ error: error.message });
     }
 }
+
 async function listUsers(req, res) {
     try {
         const users = await UserService.listUsers();
@@ -46,17 +47,14 @@ async function listUsers(req, res) {
         res.status(500).json({ error: error.message });
     }
 }
+
 async function Logout(req, res) {
     try {
         const authorizationHeader = req.headers.authorization;
-        if (!authorizationHeader) {
-            return res.status(401).json({ error: 'No se proporcionó un token de autenticación' });
-        }
+        if (!authorizationHeader) return res.status(401).json({ error: 'No se proporcionó un token de autenticación' });
 
         const token = authorizationHeader.split(' ')[1];
-        if (!token) {
-            return res.status(401).json({ error: 'Formato de token inválido' });
-        }
+        if (!token) return res.status(401).json({ error: 'Formato de token inválido' });
 
         await UserService.Logout(token);
         res.status(200).json({ message: 'Sesión cerrada exitosamente' });
@@ -75,6 +73,7 @@ async function deleteUser(req, res) {
         res.status(400).json({ error: error.message });
     }
 }
+
 module.exports = {
     registerUser,
     loginUser,

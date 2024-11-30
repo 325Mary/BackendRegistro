@@ -1,16 +1,18 @@
 const express = require('express');
 const router = express.Router();
 const ContactController = require('../Controllers/Registro.Controller');
+const  authMiddleware= require('../../Middleware/AuthMiddleware')
 
-router.post('/crearRegistro', ContactController.createContact);
 
-router.get('/LstarRegistros', ContactController.getAllContacts);
+router.post('/crearRegistro', authMiddleware, ContactController.createContact);
 
-router.get('/listarPorId/:id', ContactController.getContactById);
+router.get('/LstarRegistros', authMiddleware, ContactController.getAllContacts);
 
-router.put('/actualizar/:id', ContactController.updateContact);
+router.get('/listarPorId/:id', authMiddleware,  ContactController.getContactById);
 
-router.delete('/eliminar/:id', ContactController.deleteContact);
+router.put('/actualizar/:id', authMiddleware, ContactController.updateContact);
+
+router.delete('/eliminar/:id', authMiddleware, ContactController.deleteContact);
 
 router.get('/search', ContactController.searchContacts);
 
