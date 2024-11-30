@@ -20,8 +20,9 @@ backend.use(UsuarioRoutes);
 backend.use(RegistroRoutes)
 
 backend.set('port', process.env.PORT || port);
-
 backend.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
-
+backend.get('/', (req, res) => {
+    res.send('Backend en ejecucion');
+  });
 backend.use('/api', contactRoutes); 
 module.exports= backend;
