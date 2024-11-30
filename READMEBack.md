@@ -46,3 +46,6 @@ Descripción de los Archivos/Directorios:
 /services: Contiene la lógica que media entre los controladores y los modelos.
 /utils: Funciones adicionales como validaciones, manejo de errores, etc.
 package.json: Archivo que contiene las dependencias y los scripts de configuración de npm para el backend 
+
+
+Accder a la documentación de API atravez de SWAGGER : ya compilado el proyecto y ejecutandose en el puerto establecido se puede acceder a la vista de Swagger atravez de http://localhost:3001/api-docs/#/
