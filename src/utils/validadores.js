@@ -4,7 +4,7 @@ function validateEmail(email) {
 }
 
 function validatePassword(password) {
-    const regex = /^.{6}$/;
+    const regex = /^.{6,}$/;
         return regex.test(password);
 }
 
